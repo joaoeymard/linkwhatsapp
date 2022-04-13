@@ -1,0 +1,69 @@
+:root {
+  --color-primary: #128c7e;
+}
+
+html, body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+html, body, a, img, input {
+  padding: 0;
+  margin: 0;
+}
+header, main, footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+main {
+  flex-grow: 1;
+}
+
+header {
+  background-color: var(--color-primary);
+  color: #fff
+}
+header .navbar {
+  height: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header .nb-buttons {
+  display: flex;
+  flex-direction: row;
+}
+header .nb-buttons>a {
+  line-height: 0;
+  padding: 12px;
+}
+header .nb-buttons>a>img {
+  height: 24px;
+  width: 24px;
+}
+
+footer {
+  padding-bottom: 32px;
+}
+footer .npt-number {
+  display: block;
+  width: calc(100% - 26px);
+  border: 1px solid teal;
+  font-size: large;
+  padding: 12px;
+  border-radius: 5px;
+  text-align: center;
+}
+footer .btn-ws {
+  display: block;
+  border: 0px;
+  background-color: var(--color-primary);
+  color: #fff;
+  width: 100%;
+  font-size: large;
+  padding: 8px;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 6px;
+}
