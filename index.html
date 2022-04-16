@@ -18,7 +18,7 @@
       <span>LKW</span>
 
       <div class="nb-buttons">
-        <a href="http://github.com" target="_blank" rel="link para o projeto no github">
+        <a href="https://github.com/joaoeymard/linkwhatsapp" target="_blank" rel="link para o projeto no github">
           <img src="images/github.svg" alt="icone do github">
         </a>
       </div>
@@ -45,9 +45,37 @@
     const $btnWs = document.querySelector('.btn-ws');
     const $nptNumber = document.querySelector('.npt-number');
     const $lblNumber = document.querySelector('.lbl-number');
+    const $lastNumbers = document.querySelector('.last-numbers');
 
     const setMask = (value, mask, ini = 0) => mask.replace(/\*/g, () => value[ini++] || '');
     const onlyNumbers = (number) => (String(number).match(/\d+/g) || []).join('');
+    const openWhats = (number) => window.open(`https://wa.me/55${number}`, '_blank');
+    const formatTime = (date) => new Date(date).toLocaleString('pt-br');
+
+    const saveNumber = (strNumber) => {
+      const listLastNumbers = JSON.parse(localStorage.getItem('numbers') || '[]');
+
+      listLastNumbers.unshift({
+        phone: strNumber,
+        time: Date.now()
+      });
+
+      localStorage.setItem('numbers', JSON.stringify(listLastNumbers.splice(0, 5)));
+    }
+
+    const showLastNumbers = () => {
+      const listLastNumbers = JSON.parse(localStorage.getItem('numbers') || '[]');
+
+      $lastNumbers.textContent = '';
+      listLastNumbers.forEach(number => {
+        $lastNumbers.innerHTML = $lastNumbers.innerHTML + `
+          <li onclick="openWhats(${onlyNumbers(number.phone)})">
+            <p class="number">${number.phone}</p>
+            <span class="time">${formatTime(number.time)}</span>
+          </li>
+        `
+      });
+    }
 
     const evtMaskPhone = (ev) => {
       const phoneNumber = onlyNumbers(ev.target.value);
@@ -65,15 +93,26 @@
       }
     }
 
+    const clearInputNumber = () => {
+      $frmNewNumber.reset();
+      $lblNumber.textContent = '';
+    }
+
     $frmNewNumber.addEventListener('submit', (ev) => {
       ev.preventDefault();
 
-      const phoneNumber = onlyNumbers($lblNumber.textContent);
-      window.open(`https://wa.me/55${phoneNumber}?text=olá`, '_blank');
+      saveNumber($lblNumber.textContent);
+      showLastNumbers();
+      clearInputNumber();
+      openWhats(onlyNumbers($lblNumber.textContent));
     });
 
     $nptNumber.addEventListener('keyup', evtMaskPhone);
     $nptNumber.addEventListener('keydown', evtMaskPhone);
+
+    window.onload = () => {
+      showLastNumbers();
+    }
   </script>
 </body>
 
