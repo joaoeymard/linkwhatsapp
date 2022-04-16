@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,8 +10,9 @@
 
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  
+
   <header>
     <div class="navbar">
       <span>LKW</span>
@@ -29,8 +31,11 @@
   </main>
 
   <footer>
-    <form class="frm-new-number">
-      <input class="npt-number" type="number" value="88">
+    <form class="frm-new-number" novalidate>
+      <div>
+        <label for="ws-number" class="lbl-number"></label>
+        <input id="ws-number" class="npt-number" type="number" autocomplete="off">
+      </div>
       <button type="submit" class="btn-ws">open on whatsapp</button>
     </form>
   </footer>
@@ -39,13 +44,37 @@
     const $frmNewNumber = document.querySelector('.frm-new-number');
     const $btnWs = document.querySelector('.btn-ws');
     const $nptNumber = document.querySelector('.npt-number');
+    const $lblNumber = document.querySelector('.lbl-number');
+
+    const setMask = (value, mask, ini = 0) => mask.replace(/\*/g, () => value[ini++] || '');
+    const onlyNumbers = (number) => (String(number).match(/\d+/g) || []).join('');
+
+    const evtMaskPhone = (ev) => {
+      const phoneNumber = onlyNumbers(ev.target.value);
+
+      ev.target.value = phoneNumber.slice(0, 11);
+
+      if (phoneNumber.length < 3) {
+        $lblNumber.textContent = phoneNumber;
+      } else if (phoneNumber.length < 7) {
+        $lblNumber.textContent = setMask(phoneNumber, '(**) ****');
+      } else if (phoneNumber.length < 11) {
+        $lblNumber.textContent = setMask(phoneNumber, '(**) ****-****');
+      } else {
+        $lblNumber.textContent = setMask(phoneNumber, '(**) *****-****');
+      }
+    }
 
     $frmNewNumber.addEventListener('submit', (ev) => {
       ev.preventDefault();
 
-      const phoneNumber = $nptNumber.value.match(/\d+/g).join('');
-      window.open(`https://wa.me/55${ phoneNumber }?text=olá`, '_blank');
-    })
+      const phoneNumber = onlyNumbers($lblNumber.textContent);
+      window.open(`https://wa.me/55${phoneNumber}?text=olá`, '_blank');
+    });
+
+    $nptNumber.addEventListener('keyup', evtMaskPhone);
+    $nptNumber.addEventListener('keydown', evtMaskPhone);
   </script>
 </body>
+
 </html>

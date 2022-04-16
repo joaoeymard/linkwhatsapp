@@ -4,7 +4,6 @@
 
 html, body {
   display: flex;
-  min-height: 100vh;
   flex-direction: column;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -22,10 +21,10 @@ main {
 
 header {
   background-color: var(--color-primary);
-  color: #fff
+  color: #fff;
 }
 header .navbar {
-  height: 48px;
+  height: 56px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -36,7 +35,7 @@ header .nb-buttons {
 }
 header .nb-buttons>a {
   line-height: 0;
-  padding: 12px;
+  padding: 16px;
 }
 header .nb-buttons>a>img {
   height: 24px;
@@ -45,15 +44,29 @@ header .nb-buttons>a>img {
 
 footer {
   padding-bottom: 32px;
+  width: calc(100vw - 30px);
+  position: fixed;
+  bottom: 0;
 }
-footer .npt-number {
+footer .npt-number, footer .lbl-number {
   display: block;
   width: calc(100% - 26px);
+  min-height: 26px;
   border: 1px solid teal;
+  background-color: #fff;
   font-size: large;
   padding: 12px;
   border-radius: 5px;
   text-align: center;
+}
+footer .lbl-number:hover {
+  box-shadow: 0 0 5px #888888;
+}
+footer .npt-number {
+  position: absolute;
+  top: 0;
+  width: 0;
+  z-index: -1;
 }
 footer .btn-ws {
   display: block;
