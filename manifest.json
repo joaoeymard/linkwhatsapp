@@ -1,8 +1,9 @@
 {
-  "name": "LinkWhatsapp",
+  "name": "Generate Link Whatsapp",
   "short_name": "LKW",
   "start_url": ".",
-  "display": "fullscreen",
+  "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#128c7e",
   "description": "A page to generate whatsapp contacts link"
 }
