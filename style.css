@@ -34,11 +34,11 @@ header .nb-buttons {
   display: flex;
   flex-direction: row;
 }
-header .nb-buttons>a {
+header .nb-buttons > a {
   line-height: 0;
   padding: 16px;
 }
-header .nb-buttons>a>img {
+header .nb-buttons > a > img {
   height: 24px;
   width: 24px;
 }
@@ -46,7 +46,7 @@ header .nb-buttons>a>img {
 main .last-numbers {
   list-style: none;
   padding: 0;
-  margin: 16px 0 0;
+  margin: 16px 0 180px;
 }
 main .last-numbers li {
   text-decoration: none;
@@ -69,40 +69,59 @@ main .last-numbers .number {
 }
 
 footer {
-  padding-bottom: 32px;
-  width: calc(100vw - 30px);
+  width: 100%;
   position: fixed;
+  background-color: #fff;
   bottom: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
 }
-footer .npt-number, footer .lbl-number {
+footer .frm-new-number {
+  padding: 16px 15px 32px;
+}
+footer .npt-number {
   display: block;
-  width: calc(100% - 26px);
+  width: calc(100% - 28px);
   min-height: 26px;
-  border: 1px solid teal;
+  border: 2px solid var(--color-primary);
   background-color: #fff;
   font-size: large;
   padding: 12px;
   border-radius: 5px;
   text-align: center;
 }
-footer .lbl-number:hover {
-  box-shadow: 0 0 5px #888888;
+footer .npt-number:hover {
+  border-color: initial;
 }
-footer .npt-number {
-  position: absolute;
-  top: 0;
-  width: 0;
-  z-index: -1;
+footer .npt-number:invalid {
+  border-color: red !important;
 }
-footer .btn-ws {
+footer .group-btn {
+  display: flex;
+}
+footer .group-btn > button {
   display: block;
   border: 0px;
   background-color: var(--color-primary);
   color: #fff;
-  width: 100%;
-  font-size: large;
+  font-size: medium;
   padding: 12px;
   border-radius: 5px;
   text-align: center;
   margin-top: 6px;
+}
+footer .group-btn .btn-ws {
+  flex-grow: 1;
+  margin-right: 6px;
+}
+footer .group-btn .btn-sh {
+  width: 80px;
+  padding: 10px;
+  line-height: 0;
+  background-color: gray;
+}
+footer .group-btn .btn-sh > img {
+  height: 24px;
+  width: 24px;
 }

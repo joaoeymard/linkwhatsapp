@@ -15,11 +15,11 @@
 
   <header>
     <div class="navbar">
-      <span>LKW</span>
+      <span>Gerador de Link</span>
 
       <div class="nb-buttons">
         <a href="https://github.com/joaoeymard/linkwhatsapp" target="_blank" rel="link para o projeto no github">
-          <img src="images/github.svg" alt="icone do github">
+          <img src="images/github.svg" alt="icon github">
         </a>
       </div>
     </div>
@@ -31,20 +31,22 @@
   </main>
 
   <footer>
-    <form class="frm-new-number" novalidate>
-      <div>
-        <label for="ws-number" class="lbl-number"></label>
-        <input id="ws-number" class="npt-number" type="number" autocomplete="off">
+    <form class="frm-new-number">
+      <input id="ws-number" class="npt-number" type="text" autocomplete="off" pattern="[0-9 ()-]+$">
+      <div class="group-btn">
+        <button type="submit" class="btn-ws">OPEN TO WHATSAPP</button>
+        <button type="button" class="btn-sh">
+          <img src="images/share.svg" alt="icon share">
+        </button>
       </div>
-      <button type="submit" class="btn-ws">open on whatsapp</button>
     </form>
   </footer>
 
   <script>
     const $frmNewNumber = document.querySelector('.frm-new-number');
     const $btnWs = document.querySelector('.btn-ws');
+    const $btnSh = document.querySelector('.btn-sh');
     const $nptNumber = document.querySelector('.npt-number');
-    const $lblNumber = document.querySelector('.lbl-number');
     const $lastNumbers = document.querySelector('.last-numbers');
 
     const setMask = (value, mask, ini = 0) => mask.replace(/\*/g, () => value[ini++] || '');
@@ -60,7 +62,7 @@
         time: Date.now()
       });
 
-      localStorage.setItem('numbers', JSON.stringify(listLastNumbers.splice(0, 5)));
+      localStorage.setItem('numbers', JSON.stringify(listLastNumbers.splice(0, 10)));
     }
 
     const showLastNumbers = () => {
@@ -77,38 +79,44 @@
       });
     }
 
-    const evtMaskPhone = (ev) => {
-      const phoneNumber = onlyNumbers(ev.target.value);
-
-      ev.target.value = phoneNumber.slice(0, 11);
-
-      if (phoneNumber.length < 3) {
-        $lblNumber.textContent = phoneNumber;
-      } else if (phoneNumber.length < 7) {
-        $lblNumber.textContent = setMask(phoneNumber, '(**) ****');
-      } else if (phoneNumber.length < 11) {
-        $lblNumber.textContent = setMask(phoneNumber, '(**) ****-****');
+    const maskPhone = (phoneNumber) => {
+      if (phoneNumber.length < 11) {
+        return setMask(phoneNumber, '(**) ****-****');
       } else {
-        $lblNumber.textContent = setMask(phoneNumber, '(**) *****-****');
+        return setMask(phoneNumber, '(**) *****-****');
       }
     }
 
     const clearInputNumber = () => {
       $frmNewNumber.reset();
-      $lblNumber.textContent = '';
     }
 
     $frmNewNumber.addEventListener('submit', (ev) => {
       ev.preventDefault();
 
-      saveNumber($lblNumber.textContent);
+      saveNumber(maskPhone(onlyNumbers($nptNumber.value)));
       showLastNumbers();
-      openWhats(onlyNumbers($lblNumber.textContent));
+      openWhats(onlyNumbers($nptNumber.value));
       clearInputNumber();
     });
 
-    $nptNumber.addEventListener('keyup', evtMaskPhone);
-    $nptNumber.addEventListener('keydown', evtMaskPhone);
+    $nptNumber.addEventListener('keyup', (ev) => {
+      if (onlyNumbers(ev.target.value).length > 8) {
+        ev.target.value = maskPhone(onlyNumbers(ev.target.value));
+      } else {
+        ev.target.value = onlyNumbers(ev.target.value);
+      }
+    })
+
+    $btnSh.addEventListener('click', (ev) => {
+      if (navigator.share !== undefined) {
+        navigator.share({
+          title: 'Link do WhatsApp',
+          text: 'link do whatsapp para o número ' + maskPhone(onlyNumbers($nptNumber.value)),
+          url: 'https://wa.me/55' + onlyNumbers($nptNumber.value),
+        }).catch((error) => console.log('Error sharing', error));
+      }
+    })
 
     window.onload = () => {
       showLastNumbers();
